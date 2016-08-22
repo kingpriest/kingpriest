@@ -1,0 +1,317 @@
+ $(function () {
+            $('.news_1').eq(3).hide();
+            $('.news_1').eq(4).hide();
+            $('.news_1').eq(5).hide();
+            $('label').click(function () {
+                if ($(this).text() == '展开') {
+                    $(this).text('收起');
+                    $('#news_content>div').show();
+
+                } else {
+                    $(this).text('展开');
+                    $('.news_1').eq(3).hide();
+                    $('.news_1').eq(4).hide();
+                    $('.news_1').eq(5).hide();   
+                }
+            });
+            $('.slider_zong').height(1067 / 1920 * $(window).width());
+            $(window).resize(function () {
+                $('.slider_zong').height(1067 / 1920 * $(window).width());
+            });
+
+            //$(".slide1").click(function (event) {
+            //    window.open('/index.php?r=pc/Webapp/AppTpl', '_blank');
+            //});
+            initialCoin();
+            function GetQueryString(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+
+            function showlogin() {
+                var my_show = GetQueryString("login");
+                if (my_show == 1) {
+                    loginFunc();
+                    $(".lg-mask").show();
+                } else {
+
+                }
+            }
+            showlogin();
+            window.onload = function () {
+                var i_time;
+                var s_time;
+                var swiper = new Swiper('.slider_zong.swiper-container', {
+                    pagination: '.swiper-pagination',
+                    nextButton: '.swiper-button-next',
+                    prevButton: '.swiper-button-prev',
+                    slidesPerView: 1,
+                    paginationClickable: true,
+                    loop: true,
+                    grabCursor: true,
+                    autoplay: 5000,
+                    autoplayDisableOnInteraction: false,
+                    preventLinksPropagation: true,
+                    onSlideChangeEnd: function (sw) {
+                        $("#slider_wrap .animate-content").removeClass('show');
+                        $("#slider_wrap .swiper-slide-active > .animate-content").addClass('show');
+                    }
+                });
+                window.swiper = swiper;
+            }
+
+            $("button.hefbtn").click(function (event) {
+                var linkhref = $(this).attr("hef");
+                var tagt = $(this).attr("tg") ? $(this).attr("tg") : '';
+                if (tagt == "blank") {
+                    window.open(linkhref);
+                } else {
+                    window.location.href = linkhref;
+                }
+            });
+
+            function textEllipsis() {
+                $.each($(".page2_ulwrap li p"), function (index, val) {
+                    var stlenght = $(this).text();
+
+                    if (stlenght.length > 18) {
+                        var showtext = stlenght.substring(0, 18) + ' ....';
+                        $(this).text(showtext);
+                    }
+
+                });
+            }
+
+
+            //function getIntData() {
+
+            //    $.ajax({
+            //        url: '/index.php?r=pc/Index/InvitationCase',
+            //        type: 'get',
+            //        dataType: 'json',
+            //        data: {
+            //        },
+            //        success: function (msg) {
+            //            // console.log(msg)
+            //            if (msg.status == 0) {
+            //                var int_li = '';
+            //                $(msg.data).each(function (index, item) {
+
+            //                    int_li += '<li><img class="intt_feng" src="' + item.cover_thumb + '" alt="" onerror="erroritt(this)">'
+            //                          + '<p>' + item.title + '</p><div class="page2_limask"><img src="' + item.preview_url + '" alt="">'
+            //                          + '<span>微信扫描查看</span></div></li>'
+            //                });
+
+            //                $('#page2_list').append(int_li);
+
+            //            }
+            //        }
+            //    });
+            //}
+            getIntData();
+
+            //四大设计
+            $(window).resize(function () {
+                initialCoin();
+            });
+
+            function initialCoin() {
+                var $coinWidth = $('.coin_pic').width(),
+                $roundWidth = $('.coin_round').width(),
+                $gearHeight = $('.gear_title').height(),
+                $gearCoin1 = $('#gear_1').width(),
+                $gearCoin2 = $('#gear_2').width(),
+                $gearCoin3 = $('#gear_3').width(),
+                $exampleHeight = $('.example_more').height(),
+                $divHeight = $('.right_code').height(),
+                $coinHeight = $coinWidth + "px",
+                $roundHeight = $roundWidth + "px",
+                $roundBttom = $roundWidth / 2 + "px";
+                $gearHeight = $gearHeight + "px";
+                $gearCoin1 = $gearCoin1 + "px";
+                $gearCoin2 = $gearCoin2 + "px";
+                $gearCoin3 = $gearCoin3 + "px";
+                $exampleHeight = $exampleHeight + "px";
+                $divWidth = $divHeight + "px";//获取经典案例二维码div高度
+                $('.coin_pic').css("height", $coinHeight);
+                $('.coin_round').css("height", $roundHeight);
+                $('.coin_round').css("bottom", "-" + $roundBttom);
+                $('.coin_round').css("line-height", $roundHeight);
+                $('.example_more').css("line-height", $exampleHeight);
+                $('#gear_1').css("height", $gearCoin1);
+                $('#gear_2').css("height", $gearCoin2);
+                $('#gear_3').css("height", $gearCoin3);
+                $('.gear_title').css("line-height", $gearHeight);
+                $('.right_code').css("width", $divWidth);//设置二维码div宽度
+                $('.left_code').css("width", $divWidth);//设置二维码div宽度
+            }
+            //经典案例
+            var mySwiper = new Swiper('.example.swiper-container', {
+                direction: 'vertical',
+                pagination: '.example_bar.swiper-pagination',
+                slidesPerView: 1,
+                paginationClickable: true,
+                loop: true,
+                grabCursor: true,
+                // autoplay: 15000,
+                mousewheelForceToAxis: true,
+                autoplayDisableOnInteraction: false,
+                preventLinksPropagation: true,
+            });
+            $('.left').mouseover(function () {
+                $('.left').css('z-index', '99');
+                $('.right').css('z-index', '-9');
+            });
+            $('.left').mouseout(function () {
+                $('.left').css('z-index', '');
+                $('.right').css('z-index', '');
+            });
+            $('.right').mouseover(function () {
+                $('.right').css('z-index', '99');
+                $('.left').css('z-index', '-9');
+            });
+            $('.right').mouseout(function () {
+                $('.right').css('z-index', '');
+                $('.left').css('z-index', '');
+            });
+            //手机动画
+            $('#left_middle div').click(function () {
+                var _this = $(this),
+                    _type = $(this).attr('id'),
+                    _text = _type + '_text';
+                $('.' + _type).addClass('active').siblings().removeClass('active');
+                if (_type == 'svg') {
+                    rerun();
+                }
+            });
+            //svg例子
+            var current_frame,
+                total_frames,
+                path,
+                length,
+                handle,
+                $mysvg = $('#mysvg');
+
+            var init = function () {
+                current_frame = 0;
+                total_frames = 80;
+                path = new Array();
+                length = new Array();
+
+                $('path').each(function (i, item) {
+                    path[i] = $(this)[0];
+                    l = path[i].getTotalLength();
+                    length[i] = l;
+                    path[i].style.strokeDasharray = l + ' ' + l;
+                    path[i].style.strokeDashoffset = l;
+                });
+
+                handle = 0;
+            }
+
+            var draw = function () {
+                var progress = current_frame / total_frames;
+                if (progress > 1) {
+                    window.cancelAnimationFrame(handle);
+                } else {
+                    current_frame++;
+                    for (var j = 0; j < path.length; j++) {
+                        path[j].style.strokeDashoffset = Math.floor(length[j] * (1 - progress));
+                    }
+                    handle = window.requestAnimationFrame(draw);
+                }
+            };
+
+            var loadimage = function () {
+                setTimeout(function () { $('.svg img').fadeIn(600); $('#mysvg').fadeOut(400); }, 1500);
+            };
+
+            var rerun = function () {
+                $('.svg img').fadeOut(600);
+                $('#mysvg').fadeIn();
+                init();
+                draw();
+                loadimage();
+            };
+
+            rerun();
+
+            //end
+            //右小角联小图标
+            $.ajax({
+                url: '',
+                type: 'get',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status !== 0) {
+                        alert(data.data);
+                        return;
+                    }
+                    $('#contacter').text();
+                    $('#contactType').text();
+                    $('#contactAddress').text();
+                }
+            })
+            $('.contact').on('click', '.local', function (e) {
+                if (e.target.className == 'close') {
+                    return;
+                }
+                $('.localDiv').show();
+            });
+            $('.local .close').on('click', function () {
+                $('.localDiv').hide();
+            });
+            $('.contact_wx').mouseover(function () {
+                $('.wx_coin').addClass('active');
+            });
+            $('.contact_wx').mouseout(function () {
+                $('.wx_coin').removeClass('active');
+            });
+            //end
+
+            //通知
+            setTimeout(function () {
+                $('#notify').hide("slow");
+            }, 8000)
+
+            $('#notify_close').click(function () {
+                $('#notify').hide("slow");
+            });
+
+            // getNoticeData();
+            function getNoticeData() {
+                $ajax('/index.php?r=pc/Notice/getNotices', 'get', { id: 13 }, 'json',
+                function (data) {
+                    if (data.status == 0) {
+                        var invs = data.data,
+                            notice = '';
+                        $.each(invs, function (index, inv) {
+                            notice += ' <div id="notify_head">' + inv.title + '</div>'
+                                  + '<div class="notify_pic"><img src="' + inv.img + '"></div>'
+                                  + '<div class="notify_detail"><a target="_blank" href="' + inv.url + '">查看详情</a></div>'
+                        });
+                        $('#notify').append(notice);
+                    }
+                });
+            }
+            showScroll();
+            function showScroll() {
+                $(window).scroll(function () {
+                    var scrollValue = $(window).scrollTop();
+                    if (scrollValue > 100) {
+                        $('div[class=scroll]').fadeIn();
+                        $('div.localDiv').css({ 'bottom': '90px' });
+                    } else {
+                        $('div[class=scroll]').fadeOut();
+                        $('div.localDiv').css({ 'bottom': '40px' });
+                    }
+
+                });
+                $('#scroll').click(function () {
+                    $("html,body").animate({ scrollTop: 0 }, 200);
+                });
+            }
+
+        });
