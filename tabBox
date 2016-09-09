@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>选项卡</title>
+    <style type="text/css">
+        /* CSS样式制作 */
+        #tab{
+            width:350px;
+            border:0;
+        }
+        ul {
+            border: 0;
+            margin: 0;
+            height: 30px;
+            line-height: 30px;
+            border-bottom: 2px red solid;
+        }
+
+        li {
+            cursor:pointer;
+            display: inline-block;
+            text-align: center;
+            float: left;
+            width: 70px;
+            margin: 0px 3px;
+            border: 1px red solid;
+            border-bottom: none;
+        }
+
+        div {
+            text-align: center;
+            border:1px red solid;
+            border-top:1px white solid;
+        }
+
+        .c1 {
+            border-top: 2px red solid;
+            border-bottom: 2px white solid;
+        }
+        .hide{
+            display:none;
+        }
+    </style>
+    <script src="../jquery-3.0.0/jquery-3.0.0.js"></script>
+
+</head>
+<body>
+    <!-- HTML页面布局 -->
+    <div id="tab">
+        <ul>
+            <li class="c1" style="font-size:45px !important;">房产</li>
+            <li>家居</li>
+            <li>二手房</li>
+        </ul>
+        <div>
+            <p>
+                111111111111111 总价20万买一居
+            </p>
+            <p>
+                200万内购五环三居 140万安家东三环
+            </p>
+            <p>
+                北京首现零首付楼盘 53万购东5环50平
+            </p>
+            <p>
+                京楼盘直降5000 中信府 公园楼王现房
+            </p>
+        </div>
+        <div class="hide">
+            <p>
+                222222222222222222 总价20万买一居
+            </p>
+            <p>
+                200万内购五环三居 140万安家东三环
+            </p>
+            <p>
+                北京首现零首付楼盘 53万购东5环50平
+            </p>
+            <p>
+                京楼盘直降5000 中信府 公园楼王现房
+            </p>
+        </div>
+        <div class="hide">
+            <p>
+                33333333333333333 总价20万买一居
+            </p>
+            <p>
+                200万内购五环三居 140万安家东三环
+            </p>
+            <p>
+                北京首现零首付楼盘 53万购东5环50平
+            </p>
+            <p>
+                京楼盘直降5000 中信府 公园楼王现房
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        //window.onload = function () {
+
+        //var tabs1 = document.getElementById("tab");
+        //var ul = tabs1.getElementsByTagName("ul")[0];
+        //var div = tabs1.getElementsByTagName("div");
+        //var li = ul.getElementsByTagName("li");
+
+        //for (var i = 0, len = li.length; i < len; i++) {
+        //    li[i].index = i;
+        //    li[i].onclick = function () {
+        //        for (var n = 0; n < len; n++) {
+        //            li[n].className = "";
+        //            div[n].style.display = "none";
+        //        }
+
+        //        li[this.index].className = "c1";
+        //        div[this.index].style.display = "block";
+        //    }
+        //}
+
+        //}
+
+        
+        function Tab() {
+            var tabs = document.getElementById("tab");
+            var uls = tabs.getElementsByTagName("ul")[0];
+            this.divs = tabs.getElementsByTagName("div");
+            this.lis = uls.getElementsByTagName("li");
+        }
+
+        Tab.prototype.click = function () {
+            var self = this;
+            for (i = 0, len = self.lis.length; i < len; i++) {
+                (function(i){
+                    self.lis[i].onclick = function () {
+                    for (n = 0, len = self.lis.length; n < len; n++) {
+                        self.lis[n].className = "";
+                        self.divs[n].style.display = "none";
+                    }
+                    this.className = "c1";
+                    self.divs[i].style.display = "block";
+                    }
+                })(i)
+            }
+        }
+
+        
+
+        var Tab1 = new Tab();
+        Tab1.click();
+
+
+        //function Person() {
+        //    this.name = ["1", "2", "3"];
+        //}
+        //function SubPerson() {
+            
+        //}
+        //SubPerson.prototype = new Person();
+
+        //var person = new SubPerson();
+        //person.name.push("4");
+        //alert(person.name);
+        //var person2 = new Person();
+        //alert(person2.name);
+
+        //var person1 = new SubPerson();
+        //alert(person1.name);
+
+        var AdMoveConfig = new Object();
+        AdMoveConfig.IsInitialized = false;
+        AdMoveConfig.ScrollX = 0;
+        AdMoveConfig.ScrollY = 0;
+        AdMoveConfig.MoveWidth = 0;
+        AdMoveConfig.MoveHeight = 0;
+        AdMoveConfig.Resize = function () {
+            var winsize = GetPageSize();
+            AdMoveConfig.MoveWidth = winsize[2];
+            AdMoveConfig.MoveHeight = winsize[3];
+            AdMoveConfig.Scroll();
+        }
+        AdMoveConfig.Scroll = function () {
+            var winscroll = getPageScroll();
+            AdMoveConfig.ScrollX = winscroll[0];
+            AdMoveConfig.ScrollY = winscroll[1];
+        }
+
+        addEvent(window, "resize", AdMoveConfig.Resize);
+        addEvent(window, "scroll", AdMoveConfig.Scroll);
+
+        function AdMove(id) {
+            if (!AdMoveConfig.IsInitialized) {
+                AdMoveConfig.Resize();
+                AdMoveConfig.IsInitialized = true;
+            }
+            var obj = document.getElementById(id);
+            obj.style.position = "absolute";
+            var W = AdMoveConfig.MoveWidth - obj.offsetWidth;
+            var H = AdMoveConfig.MoveHeight - obj.offsetHeight;
+            var x = W * Math.random(), y = H * Math.random();
+            var rad = (Math.random() + 1) * Math.PI / 6;
+            var kx = Math.sin(rad), ky = Math.cos(rad);
+            var dirx = (Math.random() < 0.5 ? 1 : -1), diry = (Math.random() < 0.5 ? 1 : -1);
+            var step = 1;
+            var interval;
+            this.SetLocation = function (vx, vy) { x = vx; y = vy; }
+            this.SetDirection = function (vx, vy) { dirx = vx; diry = vy; }
+            obj.CustomMethod = function () {
+                obj.style.left = (x + AdMoveConfig.ScrollX) + "px";
+                obj.style.top = (y + AdMoveConfig.ScrollY) + "px";
+                rad = (Math.random() + 1) * Math.PI / 6;
+                W = AdMoveConfig.MoveWidth - obj.offsetWidth;
+                H = AdMoveConfig.MoveHeight - obj.offsetHeight;
+                x = x + step * kx * dirx;
+                if (x < 0) { dirx = 1; x = 0; kx = Math.sin(rad); ky = Math.cos(rad); }
+                if (x > W) { dirx = -1; x = W; kx = Math.sin(rad); ky = Math.cos(rad); }
+                y = y + step * ky * diry;
+                if (y < 0) { diry = 1; y = 0; kx = Math.sin(rad); ky = Math.cos(rad); }
+                if (y > H) { diry = -1; y = H; kx = Math.sin(rad); ky = Math.cos(rad); }
+            }
+            this.Run = function () {
+                var delay = 10;
+                interval = setInterval(obj.CustomMethod, delay);
+                obj.onmouseover = function () { clearInterval(interval); }
+                obj.onmouseout = function () { interval = setInterval(obj.CustomMethod, delay); }
+            }
+        }
+
+    </script>
+</body>
+</html>
