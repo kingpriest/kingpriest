@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			div{
+				position: absolute;
+			}
+			.snake{
+				width:10px;
+				height: 10px;
+				
+				display: inline-block;
+				position: absolute;
+			}
+			.bean{
+				width: 10px;
+				height: 10px;
+				background: green;
+				display: inline-block;
+				position: absolute;
+			}
+
+			#border{
+				width:500px;
+				height: 300px;
+				border: 2px blue solid;
+				position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<button type="button" id="btn1">开始</button>
+		<button type="button" id="btn2">暂停</button>
+		<button type="button" id="btn3">刷新</button>
+		<span>分数：</span>
+		<span id="sp"></span>
+		<div id="border">
+		</div>
+		<script>	
+			var btn1=document.getElementById("btn1");
+			var btn2=document.getElementById("btn2");
+			var btn3=document.getElementById("btn3");
+			var sp=document.getElementById("sp");
+			var bord=document.getElementById("border");
+			var timer;	
+			var num=0;
+			//蛇
+			function contains(outer,inner){
+				var child=outer.children;
+				for(var i=0,len=child.length;i<len;i++){
+					if(child[i]==inner){
+						return true;
+					}else{
+						return false;
+					}
+				}
+			};
+			function getRandColor(){
+				var colorArr=[0,1,2,3,4,5,6,7,8,9,"A","B","C","D","E","F"];
+				var result="#";
+				for(var i=0;i<6;i++){
+					var value=colorArr[parseInt(Math.random()*15)];
+					result+=value;
+				}
+				return result;
+			}
+			bord.style.backgroundColor=getRandColor();
+			function Snake(){
+				this.width=10;
+				this.height=10;
+				this.direction=null;
+				this.posX=parseInt(Math.random()*30);
+				this.posY=parseInt(Math.random()*50);
+				var x=this.posX;
+				var y=this.posY;
+				this.body=[[x,y,null,"red"],[x,y+1,null,"yellow"],[x,y+2,null,"pink"]];
+				/*this.body.push();*/
+				this.direction="";
+				this.show=function(){						
+					for(var i=0,len=this.body.length;i<len;i++){
+						if(this.body[i][2]==null){
+							this.body[i][2]=document.createElement("div");
+							this.body[i][2].className="snake";							
+							this.body[i][2].style.top=this.body[i][0]*this.height+"px";
+							this.body[i][2].style.left=this.body[i][1]*this.width+"px";
+							this.body[i][2].style.backgroundColor=this.body[i][3];
+							bord.appendChild(this.body[i][2]);
+						}else{
+							this.body[i][2].style.top=this.body[i][0]*this.height+"px";
+							this.body[i][2].style.left=this.body[i][1]*this.width+"px";
+							this.body[i][2].style.backgroundColor=this.body[i][3];
+						}
+					}				
+				};
+
+				this.move=function(){	
+					//移动蛇 没吃豆
+					var len=this.body.length-1;
+					for(var i=len;i>0;i--){
+						this.body[i][0]=this.body[i-1][0];
+						this.body[i][1]=this.body[i-1][1];
+					}			
+					//控制方向
+					switch(direction){
+						case 37:							
+							this.body[0][1]--;
+							break;
+						case 38:							
+							this.body[0][0]--;
+							break;
+						case 39:							
+							this.body[0][1]++;
+							break;
+						case 40:				
+							this.body[0][0]++;
+							break;
+						default:
+							return;
+					}
+					
+					//吃到豆
+
+						var bean=document.getElementsByClassName("bean")[0];
+						var top=parseInt(bea._bean.style.top),left=parseInt(bea._bean.style.left);
+
+						console.log(this.body[0][0]+","+top);
+						console.log(this.body[0][1]+","+left);
+
+									
+					if(this.body[0][0]*10==top&&this.body[0][1]*10==left){						
+						this.body.push([this.body[length][0],this.body[length][1],null,getRandColor()]);
+						num++;
+						sp.innerHTML=num;
+						bord.removeChild(bean);
+						bea._bean=null;
+						
+						bea.show();
+					}
+					//碰壁死
+					
+					//碰自己死
+					
+					this.show();					
+				};				
+			};						
+			//豆
+			function Bean(){				
+				this._bean=null;
+				this.getBeanRand=function(){
+					var x=(parseInt(Math.random()*30))*10;
+					var y=(parseInt(Math.random()*30))*10;					
+					var child=bord.children;					
+					var arrX=[];
+					for(var i=0,len=child.length;i<len;i++){
+						if(x==child[i].style.left&&y==child[i].style.top){
+							this.getBeanRand();
+						}else{
+							return [x,y];
+						}
+					}
+				};
+				this.show=function(){
+					if(this._bean==null){
+						this._bean=document.createElement("div");
+						this._bean.className="bean";
+						
+					}
+					var state=this.getBeanRand();
+					this.posX=state[0];
+					this.posY=state[1];
+					this._bean.style.left=this.posY+"px";
+					this._bean.style.top=this.posX+"px";
+					bord.appendChild(this._bean);					
+				};
+				/*this.hide=function(){
+					bord.removeChild()
+				};*/
+			};
+			var snake=new Snake();
+			snake.show();
+			var bea=new Bean();
+			bea.show();
+			var direction=37;
+			var speed=300;
+			
+			btn1.onclick=function(){
+				timer=setInterval('snake.move()',speed);
+				btn1.disabled=true;
+			};
+			document.onkeydown=function(e){
+				e=e||window.event;
+				direction=e.keyCode;
+				console.log(direction);
+			};
+			
+			btn2.onclick=function(){
+				clearInterval(timer);
+				btn1.disabled=false;
+			};
+			btn3.onclick=function(){
+				bord.style.backgroundColor=getRandColor();
+				snake.show();
+				
+				bea.show();
+			};
+		</script>
+	</body>
+</html>
